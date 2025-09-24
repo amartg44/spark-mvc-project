@@ -1,0 +1,31 @@
+# src/config/db_connection.py
+from pyspark.sql import DataFrame
+
+def read_from_jdbc(spark, url, table, user, password, driver="org.postgresql.Driver"):
+    """
+    Lee datos desde una BD relacional usando JDBC.
+    """
+    return (
+        spark.read.format("jdbc")
+        .option("url", url)
+        .option("dbtable", table)
+        .option("user", user)
+        .option("password", password)
+        .option("driver", driver)
+        .load()
+    )
+
+def write_to_jdbc(df: DataFrame, url, table, user, password, mode="append", driver="org.postgresql.Driver"):
+    """
+    Escribe datos en una BD relacional usando JDBC.
+    """
+    (
+        df.write.format("jdbc")
+        .option("url", url)
+        .option("dbtable", table)
+        .option("user", user)
+        .option("password", password)
+        .option("driver", driver)
+        .mode(mode)
+        .save()
+    )
