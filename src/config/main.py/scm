@@ -1,0 +1,19 @@
+# src/main.py
+from config.spark_session import create_spark_session
+from config.db_connection import read_from_jdbc
+
+def main():
+    # Inicializar Spark
+    spark = create_spark_session()
+
+    # Parámetros de conexión (ejemplo PostgreSQL)
+    url = "jdbc:postgresql://localhost:5432/mi_db"
+    user = "mi_usuario"
+    password = "mi_password"
+
+    # Leer tabla
+    df = read_from_jdbc(spark, url, "clientes", user, password)
+    df.show(5)
+
+if __name__ == "__main__":
+    main()
